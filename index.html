@@ -1,0 +1,529 @@
+<!DOCTYPE HTML>
+<html>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
+
+
+<style type="text/css">
+    html,
+    body {
+        width: 100%;
+        margin: 0;
+    }
+
+    html {
+        background-image: url(assets/misc/background.jpg);
+        background-position: center;
+        background-size: cover;
+        height: 100%;
+        color: rgb(207, 198, 177);
+        font-family: "Tiro Bangla", serif;
+        letter-spacing: 0.2rem;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .titles-container-parent {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-top: 5rem;
+    }
+
+    .titles-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .titles {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .logo {
+        width: 20rem;
+    }
+
+    #subtitle {
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    h1 {}
+
+    .button-container {
+        margin-top: 2rem;
+        background-image: url(assets/misc/background-button.png);
+        background-position: center;
+        background-size: cover;
+        height: 5.73rem;
+        width: 19rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.4rem;
+    }
+
+    .button-container:hover {
+        cursor: pointer;
+        filter: brightness(1.2);
+        filter: drop-shadow(0 0 1rem #f5f0a810);
+        font-size: 1.45rem;
+        transition: 0.15s;
+        color: white;
+    }
+
+    .build-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 5rem;
+        width: 100%;
+        margin-top: 10rem;
+    }
+
+    .build-element-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .main-pic-img {
+        width: 10rem;
+        height: 10rem;
+    }
+
+    .blessing-pic-img {
+        margin-top: -2rem;
+        width: 6rem;
+        height: 6rem;
+    }
+</style>
+
+<body>
+    <div class="titles-container-parent">
+        <div class="titles-container">
+            <div class="titles">
+                <img src="assets/misc/logo.png" alt="game-logo" class="logo">
+                <h2 id="subtitle">Random build generator by Malvy DELABAN</h2>
+            </div>
+            <div class="button-container" onclick="GetRandomBuild();">
+                <div>Generate Build</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="build-container">
+        <div class="build-element-container">
+            <img id="primary-pic" class="main-pic-img">
+            <img id="primary-blessing" class="blessing-pic-img">
+        </div>
+        <div class="build-element-container">
+            <img id="secondary-pic" class="main-pic-img">
+            <img id="secondary-blessing" class="blessing-pic-img">
+        </div>
+        <div class="build-element-container">
+            <img id="ability-pic" class="main-pic-img">
+            <img id="ability-blessing" class="blessing-pic-img">
+        </div>
+    </div>
+</body>
+
+<script>
+    let currentWeapon = {};
+    let currentWeaponPrimary = {};
+    let currentWeaponSecondary = {};
+    let currentAbility = {};
+    let weaponList = [
+        {
+            name: "Engine Riffle",
+            pic: "Engine_Rifle_Icon",
+            primaryMods: [
+                {
+                    name: "Automatic Fire",
+                    pic: "Automatic_Fire"
+                },
+                {
+                    name: "Burst Fire",
+                    pic: "Burst_Fire"
+                },
+                {
+                    name: "Gatling Fire",
+                    pic: "Gatling_Fire"
+                },
+            ],
+            secondaryMods: [
+                {
+                    name: "Engine Rev",
+                    pic: "Engine_Rev"
+                },
+                {
+                    name: "Split Shot",
+                    pic: "Split_Shot"
+                },
+                {
+                    name: "Concentrated Shot",
+                    pic: "Concentrated_Shot"
+                },
+            ],
+        },
+        {
+            name: "Shotgun",
+            pic: "Shotgun_Icon",
+            primaryMods: [
+                {
+                    name: "Semi-automatic",
+                    pic: "Semi-automatic_Shotgun"
+                },
+                {
+                    name: "Full-automatic",
+                    pic: "Full-automatic"
+                },
+                {
+                    name: "Superheavy Slug",
+                    pic: "Superheavy_Slug"
+                },
+            ],
+            secondaryMods: [
+                {
+                    name: "Buckshot",
+                    pic: "Buckshot"
+                },
+                {
+                    name: "Unload",
+                    pic: "Unload"
+                },
+                {
+                    name: "Pressure Shot",
+                    pic: "Pressure_Shot"
+                },
+            ],
+        },
+        {
+            name: "Tesla Gun",
+            pic: "Tesla_Gun_Icon",
+            primaryMods: [
+                {
+                    name: "Electrical Beam",
+                    pic: "Electrical_Beam"
+                },
+                {
+                    name: "Charge Beam",
+                    pic: "Charge_Beam"
+                },
+                {
+                    name: "Unstable Coil",
+                    pic: "Unstable_Coil"
+                },
+            ],
+            secondaryMods: [
+                {
+                    name: "Spark Orb",
+                    pic: "Spark_Orb"
+                },
+                {
+                    name: "Charge Orb",
+                    pic: "Charge_Orb"
+                },
+                {
+                    name: "Magnetic Storm",
+                    pic: "Magnetic_Storm"
+                },
+            ],
+        },
+        {
+            name: "Brine Revolver",
+            pic: "Brine_Revolver_Icon",
+            primaryMods: [
+                {
+                    name: "Semi-automatic",
+                    pic: "Semi-automatic_Revolver"
+                },
+                {
+                    name: "Burst Fire",
+                    pic: "Burst_Fire_Revolver"
+                },
+                {
+                    name: "Large Caliber",
+                    pic: "Large_Caliber"
+                },
+            ],
+            secondaryMods: [
+                {
+                    name: "Steady Scope",
+                    pic: "Steady_Scope"
+                },
+                {
+                    name: "Quick Scope",
+                    pic: "Quick_Scope"
+                },
+                {
+                    name: "Charge Scope",
+                    pic: "Charge_Scope"
+                },
+            ],
+        },
+        {
+            name: "Disc Thrower",
+            pic: "Disc_Thrower_Icon",
+            primaryMods: [
+                {
+                    name: "Automatic",
+                    pic: "Automatic"
+                },
+                {
+                    name: "Fan Fire",
+                    pic: "Fan_Fire"
+                },
+                {
+                    name: "Dynamo",
+                    pic: "Dynamo"
+                },
+            ],
+            secondaryMods: [
+                {
+                    name: "Inferno Discs",
+                    pic: "Inferno_Discs"
+                },
+                {
+                    name: "Electron Conductors",
+                    pic: "Electron_Conductors"
+                },
+                {
+                    name: "Search and Destroy",
+                    pic: "Search_and_Destroy"
+                },
+            ],
+        },
+        {
+            name: "Combat Bow",
+            pic: "Combat_Bow_Icon",
+            primaryMods: [
+                {
+                    name: "Precision Shot",
+                    pic: "Precision_Shot"
+                },
+                {
+                    name: "Pierce",
+                    pic: "Pierce"
+                },
+                {
+                    name: "Return Arrow",
+                    pic: "Return_Arrow"
+                },
+            ],
+            secondaryMods: [
+                {
+                    name: "Multi-Shot",
+                    pic: "Multi-Shot"
+                },
+                {
+                    name: "Smart Arrow",
+                    pic: "Smart_Arrow"
+                },
+                {
+                    name: "Exploding Arrow",
+                    pic: "Exploding_Arrow"
+                },
+            ],
+        },
+        {
+            name: "Plasma Launcher",
+            pic: "Plasma_Launcher_Icon",
+            primaryMods: [
+                {
+                    name: "Semi-automatic",
+                    pic: "Semi-automatic"
+                },
+                {
+                    name: "Flak Cannon",
+                    pic: "Flak_Cannon"
+                },
+                {
+                    name: "Seekers",
+                    pic: "Seekers"
+                },
+            ],
+            secondaryMods: [
+                {
+                    name: "Disintegration Beam",
+                    pic: "Disintegration_Beam"
+                },
+                {
+                    name: "Void Infusion",
+                    pic: "Void_Infusion"
+                },
+                {
+                    name: "Adhesive Compound",
+                    pic: "Adhesive_Compound"
+                },
+            ],
+        },
+        {
+            name: "Fish Deity",
+            pic: "Fish_Deity_Icon",
+            primaryMods: [
+                {
+                    name: "Rapid Goo",
+                    pic: "Rapid_Goo"
+                },
+                {
+                    name: "Fish Spit",
+                    pic: "Fish_Spit"
+                },
+                {
+                    name: "Hazardous Goo",
+                    pic: "Hazardous_Goo"
+                },
+            ],
+            secondaryMods: [
+                {
+                    name: "Piercing Stab",
+                    pic: "Piercing_Stab"
+                },
+                {
+                    name: "Wide Stab",
+                    pic: "Wide_Stab"
+                },
+                {
+                    name: "Chainsaw",
+                    pic: "Chainsaw"
+                },
+            ],
+        },
+        {
+            name: "Harpoon Gun",
+            pic: "Harpoon_Gun_Icon",
+            primaryMods: [
+                {
+                    name: "Piercing Harpoons",
+                    pic: "Piercing_Harpoons"
+                },
+                {
+                    name: "Ricocheting Harpoons",
+                    pic: "Ricocheting_Harpoons"
+                },
+                {
+                    name: "Pinning Harpoons",
+                    pic: "Pinning_Harpoons"
+                },
+            ],
+            secondaryMods: [
+                {
+                    name: "Barbed Harpoons",
+                    pic: "Barbed_Harpoons"
+                },
+                {
+                    name: "Binding Harpoons",
+                    pic: "Binding_Harpoons"
+                },
+                {
+                    name: "Brine-Powered Harpoons",
+                    pic: "Brine-Powered_Harpoons"
+                },
+            ],
+        },
+    ]
+    let abilityList = [
+        {
+            name: "Frag Grenade",
+            pic: "Frag_Grenade_Icon",
+        },
+        {
+            name: "Anchor",
+            pic: "Anchor_Icon",
+        },
+        {
+            name: "Smiting Spear",
+            pic: "Smiting_Spear_Icon",
+        },
+        {
+            name: "Ancient Core",
+            pic: "Ancient_Core_Icon",
+        },
+        {
+            name: "Brine Field",
+            pic: "Brine_Field_Icon",
+        },
+        {
+            name: "Turret",
+            pic: "Turret_Icon",
+        },
+    ];
+    let blessingList = [
+        "Barrier",
+        "Blood",
+        "Flares",
+        "Frozen",
+        "Goldburst",
+        "Lightning",
+        "Shadows",
+        "Spirit",
+        "Tentacles",
+        "Windburst",
+    ];
+
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
+
+    function GetRandomWeapon() {
+        currentWeapon = weaponList[getRandomInt(weaponList.length)];
+        currentWeaponPrimary = currentWeapon.primaryMods[getRandomInt(currentWeapon.primaryMods.length)];
+        currentWeaponSecondary = currentWeapon.secondaryMods[getRandomInt(currentWeapon.secondaryMods.length)];
+        console.log(currentWeapon.name, currentWeaponPrimary.name, currentWeaponSecondary.name);
+        document.getElementById("primary-pic").src = "assets/weapons/" + currentWeaponPrimary.pic + ".png";
+        document.getElementById("secondary-pic").src = "assets/weapons/" + currentWeaponSecondary.pic + ".png";
+    }
+
+    function GetRandomAbility() {
+        currentAbility = abilityList[getRandomInt(abilityList.length)];
+        document.getElementById("ability-pic").src = "assets/abilities/" + currentAbility.pic + ".png";
+    }
+
+    function GetRandomBlessing() {
+        let picToSet = null;
+        let usedBlessings = [];
+        let currentBlessing = null;
+        for (let currentBlessingId = 0; currentBlessingId < 3; currentBlessingId++) {
+            switch (currentBlessingId) {
+                case 0:
+                    picToSet = document.getElementById("primary-blessing");
+                    break;
+                case 1:
+                    picToSet = document.getElementById("secondary-blessing");
+                    break;
+                case 2:
+                    picToSet = document.getElementById("ability-blessing");
+                    break;
+            }
+            currentBlessing = blessingList[getRandomInt(blessingList.length)];
+            while (usedBlessings.includes(currentBlessing)) {
+                currentBlessing = blessingList[getRandomInt(blessingList.length)];
+            }
+            usedBlessings.push(currentBlessing);
+            picToSet.src = "assets/blessings/" + currentBlessing + "_Icon.png";
+        }
+    }
+
+    function GetRandomBuild() {
+        GetRandomWeapon();
+        GetRandomAbility();
+        GetRandomBlessing();
+    }
+
+    GetRandomBuild();
+</script>
+
+</html>
