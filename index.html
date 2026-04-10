@@ -85,11 +85,21 @@
 
     .build-container {
         display: flex;
-        flex-direction: row;
-        justify-content: center;
-        gap: 5rem;
+        flex-direction: column;
+        justify-content: end;
+        align-items: center;
+        gap: 2rem;
         width: 100%;
-        margin-top: 10rem;
+        margin-top: 5rem;
+    }
+
+    /* Desktop */
+    @media (min-width: 1000px) {
+        .build-container {
+            flex-direction: row;
+            justify-content: center;
+            align-items: end;
+        }
     }
 
     .build-element-container {
@@ -97,6 +107,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        margin-bottom: -3rem;
     }
 
     .main-pic-img {
@@ -108,6 +119,45 @@
         margin-top: -2rem;
         width: 6rem;
         height: 6rem;
+    }
+
+    .blessing-main-img {
+        position: absolute;
+        bottom: -3.2rem;
+        width: 6rem;
+        height: 6rem;
+    }
+
+    .build-element-name {
+        font-size: 1.3rem;
+        width: 12rem;
+        text-wrap: wrap;
+        text-align: center;
+    }
+
+    .build-weapon {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .build-ability {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .main-name {
+        font-size: 2rem;
+    }
+
+    .main-img {
+        width: 15rem;
+        height: 15rem;
     }
 </style>
 
@@ -125,17 +175,24 @@
     </div>
 
     <div class="build-container">
+        <div class="build-weapon">
+            <p id="weapon-name" class="main-name"></p>
+            <img id="weapon-pic" class="main-img">
+        </div>
         <div class="build-element-container">
+            <p id="primary-name" class="build-element-name"></p>
             <img id="primary-pic" class="main-pic-img">
             <img id="primary-blessing" class="blessing-pic-img">
         </div>
         <div class="build-element-container">
+            <p id="secondary-name" class="build-element-name"></p>
             <img id="secondary-pic" class="main-pic-img">
             <img id="secondary-blessing" class="blessing-pic-img">
         </div>
-        <div class="build-element-container">
-            <img id="ability-pic" class="main-pic-img">
-            <img id="ability-blessing" class="blessing-pic-img">
+        <div class="build-ability">
+            <p id="ability-name" class="main-name"></p>
+            <img id="ability-pic" class="main-img">
+            <img id="ability-blessing" class="blessing-main-img">
         </div>
     </div>
 </body>
@@ -485,11 +542,17 @@
         console.log(currentWeapon.name, currentWeaponPrimary.name, currentWeaponSecondary.name);
         document.getElementById("primary-pic").src = "assets/weapons/" + currentWeaponPrimary.pic + ".png";
         document.getElementById("secondary-pic").src = "assets/weapons/" + currentWeaponSecondary.pic + ".png";
+        document.getElementById("weapon-name").innerHTML = currentWeapon.name;
+        document.getElementById("weapon-pic").src = "assets/weapons/" + currentWeapon.pic + ".png";
+        document.getElementById("primary-name").innerHTML = currentWeaponPrimary.name;
+        document.getElementById("secondary-name").innerHTML = currentWeaponSecondary.name;
     }
 
     function GetRandomAbility() {
         currentAbility = abilityList[getRandomInt(abilityList.length)];
         document.getElementById("ability-pic").src = "assets/abilities/" + currentAbility.pic + ".png";
+        document.getElementById("ability-name").innerHTML = currentAbility.name;
+
     }
 
     function GetRandomBlessing() {
